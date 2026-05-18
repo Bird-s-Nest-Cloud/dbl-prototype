@@ -20,7 +20,8 @@ import {
   Search,
   Settings,
   Briefcase,
-  FileText
+  FileText,
+  DollarSign
 } from "lucide-react";
 
 const navigation = [
@@ -39,8 +40,10 @@ const navigation = [
     ]
   },
   { name: "Project Accounts", href: "/accounts", icon: Calculator },
+  { name: "Investor Management", href: "/investor", icon: DollarSign },
   { name: "HRM & Labour Log", href: "/hrm", icon: Users },
   { name: "Property & Installments", href: "/property", icon: Building },
+  { name: "Customer Management", href: "/customers", icon: Users },
   { name: "Documents", href: "/documents", icon: FileText },
   { name: "Site Media & CCTV", href: "/cctv", icon: Video },
   { name: "Website Preview", href: "/preview", icon: Globe },
@@ -51,6 +54,8 @@ const navigation = [
       { name: "Branch", href: "/settings/branch" },
       { name: "Designation", href: "/settings/designation" },
       { name: "Role", href: "/settings/role" },
+      { name: "Labour Category", href: "/settings/labour-category" },
+      { name: "Sqft Rate", href: "/settings/sqft-rate" },
     ]
   },
 ];

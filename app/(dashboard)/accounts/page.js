@@ -7,6 +7,8 @@ export default function ProjectAccounting() {
   const [selectedProject, setSelectedProject] = useState("Project Delta");
   const [activeTab, setActiveTab] = useState("expense");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isVoucherModalOpen, setIsVoucherModalOpen] = useState(false);
+  const [selectedVoucher, setSelectedVoucher] = useState(null);
 
   const projects = ["Project Delta", "Project Alpha", "Project Sigma", "Project Omega"];
 
@@ -164,7 +166,13 @@ export default function ProjectAccounting() {
                     ৳{item.amount.toLocaleString()}
                   </td>
                   <td className="py-4 px-6 text-sm">
-                    <button className="text-amber-600 hover:text-amber-700 font-medium flex items-center gap-1">
+                    <button 
+                      onClick={() => {
+                        setSelectedVoucher(item);
+                        setIsVoucherModalOpen(true);
+                      }}
+                      className="text-amber-600 hover:text-amber-700 font-medium flex items-center gap-1"
+                    >
                       <Eye size={16} />
                       Voucher
                     </button>
@@ -293,6 +301,8 @@ export default function ProjectAccounting() {
                         <option value="Labour">Labour</option>
                         <option value="Utility">Utility</option>
                         <option value="Client Payment">Client Payment</option>
+                        <option value="Investor Payment">Investor Payment</option>
+                        <option value="Salary">Salary</option>
                       </>
                     )}
                   </select>
@@ -334,6 +344,109 @@ export default function ProjectAccounting() {
                 className="px-4 py-2.5 bg-amber-500 text-slate-900 rounded-lg font-medium hover:bg-amber-600 transition-colors text-sm shadow-sm"
               >
                 Save Entry
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Voucher Modal */}
+      {isVoucherModalOpen && selectedVoucher && (
+        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-3xl overflow-hidden flex flex-col">
+            {/* Modal Header */}
+            <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+              <div>
+                <h2 className="text-xl font-bold text-slate-900">Voucher Details</h2>
+                <p className="text-slate-500 text-sm mt-0.5">Voucher No: <span className="font-mono font-medium text-slate-700">{selectedVoucher.voucher}</span></p>
+              </div>
+              <button 
+                onClick={() => setIsVoucherModalOpen(false)}
+                className="text-slate-400 hover:text-slate-500 hover:bg-slate-100 p-2 rounded-full transition-colors"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Modal Body - Voucher Design */}
+            <div className="p-8 space-y-6 bg-white">
+              {/* Company Header */}
+              <div className="text-center border-b border-slate-200 pb-4">
+                <h1 className="text-2xl font-bold text-slate-900">DBL BUILDERS</h1>
+                <p className="text-sm text-slate-500">Project: {selectedProject}</p>
+                <div className="mt-2 inline-block bg-slate-900 text-white px-4 py-1 rounded text-sm font-bold uppercase tracking-wider">
+                  {activeTab === "income" ? "Credit Voucher" : "Debit Voucher"}
+                </div>
+              </div>
+
+              {/* Meta Info */}
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <p><span className="font-medium text-slate-500">Date:</span> <span className="font-mono">{selectedVoucher.date}</span></p>
+                  <p><span className="font-medium text-slate-500">Voucher No:</span> <span className="font-mono">{selectedVoucher.voucher}</span></p>
+                </div>
+                <div className="text-right">
+                  <p><span className="font-medium text-slate-500">Account Category:</span> {selectedVoucher.category}</p>
+                  {selectedVoucher.branch && <p><span className="font-medium text-slate-500">Branch:</span> {selectedVoucher.branch}</p>}
+                </div>
+              </div>
+
+              {/* Table */}
+              <div className="border border-slate-200 rounded-lg overflow-hidden">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="bg-slate-50 text-slate-700 border-b border-slate-200">
+                      <th className="py-3 px-4 text-sm font-medium border-r border-slate-200">Particulars</th>
+                      <th className="py-3 px-4 text-sm font-medium text-right">Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b border-slate-200 h-24 items-start">
+                      <td className="py-3 px-4 text-sm text-slate-700 align-top border-r border-slate-200">
+                        {selectedVoucher.description}
+                      </td>
+                      <td className="py-3 px-4 text-sm font-semibold text-slate-900 text-right align-top">
+                        ৳{selectedVoucher.amount.toLocaleString()}
+                      </td>
+                    </tr>
+                    <tr className="bg-slate-50">
+                      <td className="py-3 px-4 text-sm font-bold text-slate-900 text-right border-r border-slate-200">Total</td>
+                      <td className="py-3 px-4 text-sm font-bold text-slate-900 text-right">
+                        ৳{selectedVoucher.amount.toLocaleString()}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Amount in words */}
+              <div className="text-sm text-slate-600 italic">
+                <span className="font-medium not-italic text-slate-700">Amount in Words:</span> Taka {selectedVoucher.amount.toLocaleString()} Only.
+              </div>
+
+              {/* Signatures */}
+              <div className="grid grid-cols-4 gap-4 pt-12 text-center text-xs text-slate-500">
+                <div className="border-t border-slate-300 pt-2">Prepared By</div>
+                <div className="border-t border-slate-300 pt-2">Checked By</div>
+                <div className="border-t border-slate-300 pt-2">Approved By</div>
+                <div className="border-t border-slate-300 pt-2">Received By</div>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-6 border-t border-slate-100 flex items-center justify-end gap-3 bg-slate-50">
+              <button 
+                onClick={() => setIsVoucherModalOpen(false)}
+                className="px-4 py-2.5 border border-slate-200 rounded-lg font-medium text-slate-700 hover:bg-white transition-colors text-sm"
+              >
+                Close
+              </button>
+              <button 
+                onClick={() => window.print()}
+                className="px-4 py-2.5 bg-slate-900 text-white rounded-lg font-medium hover:bg-slate-800 transition-colors text-sm shadow-sm flex items-center gap-2"
+              >
+                <FileText size={16} />
+                Print Voucher
               </button>
             </div>
           </div>

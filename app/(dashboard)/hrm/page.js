@@ -29,10 +29,10 @@ export default function HRMLabourLog() {
   ];
 
   const labourHistory = [
-    { date: "2026-05-15", project: "Project Delta", count: 25, rate: 20, total: 500 },
-    { date: "2026-05-14", project: "Project Alpha", count: 30, rate: 22, total: 660 },
-    { date: "2026-05-14", project: "Project Delta", count: 20, rate: 20, total: 400 },
-    { date: "2026-05-13", project: "Project Sigma", count: 15, rate: 18, total: 270 },
+    { date: "2026-05-15", project: "Project Delta", count: 25, rate: 20, total: 500, category: "Tiles Mistri" },
+    { date: "2026-05-14", project: "Project Alpha", count: 30, rate: 22, total: 660, category: "Rod Soja Korar Mistri" },
+    { date: "2026-05-14", project: "Project Delta", count: 20, rate: 20, total: 400, category: "Raj Mistri" },
+    { date: "2026-05-13", project: "Project Sigma", count: 15, rate: 18, total: 270, category: "General Labour" },
   ];
 
   const totalAutoCalculated = (labourCount && wageRate) ? labourCount * wageRate : 0;
@@ -240,7 +240,7 @@ export default function HRMLabourLog() {
               <HardHat size={20} className="text-amber-500" />
               Daily Labour Entry
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">Select Project</label>
                 <div className="relative">
@@ -252,6 +252,23 @@ export default function HRMLabourLog() {
                     {projects.map((p) => (
                       <option key={p} value={p}>{p}</option>
                     ))}
+                  </select>
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-500">
+                    <ChevronDown size={16} />
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Labour Category</label>
+                <div className="relative">
+                  <select
+                    className="w-full appearance-none bg-slate-50 border border-slate-200 rounded-lg py-2.5 pl-4 pr-10 text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent cursor-pointer"
+                  >
+                    <option value="Tiles Mistri">Tiles Mistri</option>
+                    <option value="Rod Soja Korar Mistri">Rod Soja Korar Mistri</option>
+                    <option value="Raj Mistri">Raj Mistri</option>
+                    <option value="General Labour">General Labour</option>
                   </select>
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-500">
                     <ChevronDown size={16} />
@@ -306,6 +323,7 @@ export default function HRMLabourLog() {
                   <tr className="bg-slate-900 text-white">
                     <th className="py-4 px-6 text-sm font-medium">Date</th>
                     <th className="py-4 px-6 text-sm font-medium">Project</th>
+                    <th className="py-4 px-6 text-sm font-medium">Category</th>
                     <th className="py-4 px-6 text-sm font-medium">No. of Labour</th>
                     <th className="py-4 px-6 text-sm font-medium">Wage Rate</th>
                     <th className="py-4 px-6 text-sm font-medium">Total Payment</th>
@@ -324,6 +342,11 @@ export default function HRMLabourLog() {
                         {log.date}
                       </td>
                       <td className="py-4 px-6 text-sm font-medium text-slate-900">{log.project}</td>
+                      <td className="py-4 px-6 text-sm text-slate-700">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-700">
+                          {log.category || "N/A"}
+                        </span>
+                      </td>
                       <td className="py-4 px-6 text-sm text-slate-700">{log.count}</td>
                       <td className="py-4 px-6 text-sm text-slate-700">৳{log.rate.toLocaleString()}</td>
                       <td className="py-4 px-6 text-sm font-semibold text-amber-600">৳{log.total.toLocaleString()}</td>
